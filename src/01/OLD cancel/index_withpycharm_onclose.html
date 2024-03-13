@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Transfer</title>
+</head>
+<body>
+    <button onclick="sendString()">Send String</button>
+    <div id="output"></div>
+    <button onclick="sendString2()">Send String2</button>
+    <div id="output2"></div>
+
+    <script>
+        function sendString() {
+            var stringToSend = "Hello, World1111111111!";
+            
+            var socket = new WebSocket("ws://localhost:8000");
+            socket.onopen = function(event) {
+                socket.send(stringToSend);
+            };
+            
+            socket.onmessage = function(event) {
+                document.getElementById("output").innerText = event.data;
+                socket.close();
+            };
+        }
+
+        function sendString2() {
+            var stringToSend = "Hello, World22222222!";
+            
+            var socket = new WebSocket("ws://localhost:8000");
+            socket.onopen = function(event) {
+                socket.send(stringToSend);
+            };
+            
+            socket.onmessage = function(event) {
+                document.getElementById("output2").innerText = event.data;
+                socket.close();
+            };
+        }
+
+
+
+
+    </script>
+</body>
+</html>
+
+<!-- 
+
+    <script>
+        var socket = new WebSocket("ws://localhost:8765");
+
+        socket.onopen = function(event) {
+            console.log("Connected to Blender");
+        };
+
+        socket.onmessage = function(event) {
+            console.log("Message from Blender: " + event.data);
+        };
+
+        window.onbeforeunload = function() {
+            socket.send("HTML page closed");
+        };
+    </script>
+</body>
+</html> -->

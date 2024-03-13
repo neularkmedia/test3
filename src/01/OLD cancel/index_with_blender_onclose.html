@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Transfer</title>
+</head>
+<body>
+    <button onclick="sendString()">Send String</button>
+    <div id="output"></div>
+
+    <script>
+        function sendString() {
+            var stringToSend = "Hello, World!";
+            
+            var socket = new WebSocket("ws://localhost:8000");
+            socket.onopen = function(event) {
+                socket.send(stringToSend);
+            };
+            
+            socket.onmessage = function(event) {
+                document.getElementById("output").innerText = event.data;
+                socket.close();
+            };
+
+            socket.onclose = function(event) {
+                stringToSend = "exit";
+                console.log("WebSocket connection closed.");
+                socket.send(stringToSend);
+            };
+        }
+    </script>
+</body>
+</html>

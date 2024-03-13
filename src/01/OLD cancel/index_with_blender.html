@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blender Connection</title>
+</head>
+<body>
+    <button onclick="sendMessage()">Send Message to Blender</button>
+
+    <script>
+        function sendMessage() {
+            var messageToSend = "Hello from HTML!";
+            var socket = new WebSocket("ws://localhost:8765");
+            socket.onopen = function(event) {
+                socket.send(messageToSend);
+            };
+            socket.onmessage = function(event) {
+                console.log("Received message from Blender:", event.data);
+                socket.close();
+            };
+        }
+    </script>
+</body>
+</html>

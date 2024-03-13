@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Example</title>
+</head>
+<body>
+    <h1>WebSocket Example</h1>
+    <p>Current Value: <span id="currentValue">0</span></p>
+    <button onclick="incrementValue()">Increment</button>
+    <button onclick="decrementValue()">Decrement</button>
+    
+    <script>
+        const socket = new WebSocket('ws://localhost:8765');
+
+        // Handle messages from the server
+        socket.onmessage = function(event) {
+            console.log('Message from server:', event.data);
+        };
+
+        // Send a message to the server when the page is closed
+        window.addEventListener('beforeunload', function() {
+            socket.send(JSON.stringify({ message: 'Page closed' }));
+            socket.close();
+        });
+
+        // Function to increment the value and send it to the server
+        function incrementValue() {
+            const currentValueSpan = document.getElementById('currentValue');
+            let currentValue = parseInt(currentValueSpan.textContent);
+            if (currentValue < 10) {
+                currentValue++;
+                currentValueSpan.textContent = currentValue;
+                socket.send(JSON.stringify({ message: currentValue }));
+            }
+        }
+
+        // Function to decrement the value and send it to the server
+        function decrementValue() {
+            const currentValueSpan = document.getElementById('currentValue');
+            let currentValue = parseInt(currentValueSpan.textContent);
+            if (currentValue > 0) {
+                currentValue--;
+                currentValueSpan.textContent = currentValue;
+                socket.send(JSON.stringify({ message: currentValue }));
+            }
+        }
+    </script>
+</body>
+</html>
